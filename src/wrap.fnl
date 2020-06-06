@@ -15,16 +15,15 @@
   (set-mode mode-name ...))
 
 (fn love.load []
-  (love.graphics.setDefaultFilter :nearest :nearest)
-  (canvas:setFilter :nearest :nearest))
+  (love.graphics.setDefaultFilter :nearest :nearest))
 
 (fn love.draw []
   (love.graphics.setCanvas canvas)
   (love.graphics.clear)
-  (love.graphics.setColor 1 1 1)
+  (love.graphics.setColor 1 1 1 1)
   (mode.draw)
   (love.graphics.setCanvas)
-  (love.graphics.setColor 1 1 1)
+  (love.graphics.setColor 1 1 1 1)
   (love.graphics.draw canvas 0 0 0 scale scale))
 
 (fn love.update [dt]
@@ -33,11 +32,10 @@
 (fn love.keypressed [key]
   (match key
     "f5" (reload-mode "src.modes.mode-game")
-    "f6" (love.event.quit "restart")
-    "f7" (love.event.quit))
-  
-  (if (and (love.keyboard.isDown "lctrl" "rctrl" "capslock") (= key "q"))
-    (love.event.quit)
-    ;; add what each keypress should do in each mode
-    (when mode.keypressed
-      (mode.keypressed key set-mode))))
+    "f6" (love.event.quit "restart"))
+
+  (when (and (love.keyboard.isDown "lctrl" "rctrl" "capslock") (= key "q"))
+    (love.event.quit))
+
+  (when mode.keypressed
+    (mode.keypressed key set-mode)))
